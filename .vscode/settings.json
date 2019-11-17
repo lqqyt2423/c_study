@@ -1,0 +1,10 @@
+{
+  "files.associations": {
+    "*.wpy": "vue",
+    "*.cjson": "jsonc",
+    "*.wxss": "css",
+    "*.wxs": "javascript",
+    "*.jsx": "javascriptreact",
+    "limits.h": "c"
+  }
+}
