@@ -6,6 +6,7 @@ int strlen(char s[]) {
   return i;
 }
 
+// 字符串转数字
 int atoi(char s[]) {
   int i, n;
 
@@ -26,4 +27,30 @@ void squeeze(char s[], int c) {
     if (s[i] != c)
       s[j++] = s[i];
   s[j] = '\0';
+}
+
+// 统计x中值为1的二进制位数
+int bitcount(unsigned x) {
+  int b;
+  for (b = 0; x != 0; x >>= 1)
+    if (x & 01)
+      b++;
+  return b;
+}
+
+// 数字转字符串
+void itoa(int n, char s[]) {
+  int i, sign;
+
+  // 记录符号
+  if ((sign = n) < 0)
+    n = -n;
+  i = 0;
+  do {
+    s[i++] = n % 10 + '0';
+  } while ((n /= 10) > 0);
+  if (sign < 0)
+    s[i++] = '-';
+  s[i] = '\0';
+  reverse(s);
 }
