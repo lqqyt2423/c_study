@@ -1,0 +1,300 @@
+Stack Overflow
+Products
+Customers
+Use cases
+Search…
+Log in Sign up
+By using our site, you acknowledge that you have read and understand our Cookie Policy, Privacy Policy, and our Terms of Service.
+
+Make your voice heard. Take the 2020 Developer Survey now.
+Home
+PUBLIC
+Stack Overflow
+Tags
+Users
+Jobs
+TEAMS
+What’s this?
+Free 30 Day Trial
+Compiling C++11 with g++
+Ask Question
+Asked 7 years, 9 months ago
+Active 1 year, 6 months ago
+Viewed 702k times
+
+357
+
+
+127
+I'm trying to update my C++ compiler to C++11. I have searched a bit and I have come to the conclusion that I have to use the flag -std=c++0x or -std=gnu++0x, but I don't know many things about flags. Can anyone help me? (I'm using Ubuntu 12.04.)
+
+Here is the error that I get from the compiler when I attempt to use a library which is included in C++11 (i.e. array):
+
+#include <array>
+#include <iostream>
+
+int main()
+{
+    std::array<int, 3> arr = {2, 3, 5};
+    ...
+}
+This file requires compiler and library support for the upcoming ISO C++ standard, C++0x. This support is currently experimental, and must be enabled with the -std=c++0x or -std=gnu++0x compiler options.
+
+c++ c++11 g++ flags
+shareimprove this question
+edited Aug 5 '18 at 18:07
+
+nbro
+9,2421313 gold badges6969 silver badges114114 bronze badges
+asked Apr 28 '12 at 12:52
+
+Rontogiannis Aristofanis
+7,41388 gold badges3333 silver badges5757 bronze badges
+5
+In the newest version, you probably have to use -std=c++11 instead. Maybe both are allowed, though. – user1203803 Apr 28 '12 at 12:56
+6
+This misses a lot of context. Show the full command you've tried (maybe even sample code you tried to compile), and what actually failed. – KillianDS Apr 28 '12 at 12:56
+4
+@classdaknok_t: both should be allowed, also ubuntu 12.04 ships g++-4.6 by default (which only supports -std=c++0x) – KillianDS Apr 28 '12 at 12:57
+3
+Add flags right after g++, e.g. g++ -std=c++0x _filename_ && ./a.out. – n. 'pronouns' m. Apr 28 '12 at 13:23
+1
+Came across this post, searching for titled error message. Im working on a QMAKE project, solution for me was adding CONFIG += c++11 to the .pro file. – user1800885 Jan 12 '17 at 20:35
+show 3 more comments
+5 Answers
+activeoldestvotes
+
+517
+
+Flags (or compiler options) are nothing but ordinary command line arguments passed to the compiler executable.
+
+Assuming you are invoking g++ from the command line (terminal):
+
+$ g++ -std=c++11 your_file.cpp -o your_program
+
+or
+
+$ g++ -std=c++0x your_file.cpp -o your_program
+
+if the above doesn't work.
+
+shareimprove this answer
+answered Apr 28 '12 at 13:22
+
+Oskar N.
+7,26711 gold badge1818 silver badges1919 bronze badges
+8
+Don't forget to put -Wall -g just after g++ – Basile Starynkevitch Apr 28 '12 at 13:41
+7
+@BasileStarynkevitch: I would add -Werror too, no reason not to when starting a project. – Matthieu M. Apr 28 '12 at 14:14
+3
+Better C++11 support is debatable and better diagnostics don't look so much better these days (Clang's page describing them uses GCC 4.2 which is ancient) gcc.gnu.org/wiki/ClangDiagnosticsComparison ;) – Jonathan Wakely May 18 '12 at 17:52
+57
+Does anyone know if/when C++ compilers will support the C++11 standard by default, that is, without a flag? – Dennis Apr 6 '13 at 7:17
+2
+And in case you don't already know, in Visual C++ simply use VC11 (Visual Studio 2012) or above to have C++11 features – gerrytan Dec 4 '14 at 2:40
+show 7 more comments
+
+44
+
+You can check your g++ by command:
+
+which g++
+g++ --version
+this will tell you which complier is currently it is pointing.
+
+To switch to g++ 4.7 (assuming that you have installed it in your machine),run:
+
+sudo update-alternatives --config gcc
+
+There are 2 choices for the alternative gcc (providing /usr/bin/gcc).
+
+  Selection    Path              Priority   Status
+------------------------------------------------------------
+  0            /usr/bin/gcc-4.6   60        auto mode
+  1            /usr/bin/gcc-4.6   60        manual mode
+* 2            /usr/bin/gcc-4.7   40        manual mode
+Then select 2 as selection(My machine already pointing to g++ 4.7,so the *)
+
+Once you switch the complier then again run g++ --version to check the switching has happened correctly.
+
+Now compile your program with
+
+g++ -std=c++11 your_file.cpp -o main
+shareimprove this answer
+edited Aug 18 '13 at 16:02
+
+Christoph
+40.9k88 gold badges6161 silver badges142142 bronze badges
+answered Aug 18 '13 at 15:29
+
+Harajyoti Das
+64155 silver badges1111 bronze badges
+Might be worth mentioning that versions like g++ 4.4 might be simply too old to do some features, so upgrading is necessary. Upgrading will depend on your system, and I'd avoid methods of compiling g++ yourself and replacing the system's compiler for reference – Colin D Aug 30 '16 at 18:07
+add a comment
+
+13
+
+Your ubuntu definitely has a sufficiently recent version of g++. The flag to use is -std=c++0x.
+
+shareimprove this answer
+answered Apr 28 '12 at 13:01
+
+Michael Slade
+13.1k22 gold badges3232 silver badges4242 bronze badges
+How can you say that, he is using ubuntu ?. Just curious to know. – Shravan40 Nov 8 '14 at 8:21
+22
+@Shravan40 OP explicitly says I'm using Ubuntu 12.04. in the question. – Timothy Gu Nov 9 '14 at 18:10
+add a comment
+
+10
+
+If you want to keep the GNU compiler extensions, use -std=gnu++0x rather than -std=c++0x. Here's a quote from the man page:
+
+The compiler can accept several base standards, such as c89 or c++98, and GNU dialects of those standards, such as gnu89 or gnu++98. By specifying a base standard, the compiler will accept all programs following that standard and those using GNU extensions that do not contradict it. For example, -std=c89 turns off certain features of GCC that are incompatible with ISO C90, such as the "asm" and "typeof" keywords, but not other GNU extensions that do not have a meaning in ISO C90, such as omitting the middle term of a "?:" expression. On the other hand, by specifying a GNU dialect of a standard, all features the compiler support are enabled, even when those features change the meaning of the base standard and some strict-conforming programs may be rejected. The particular standard is used by -pedantic to identify which features are GNU extensions given that version of the standard. For example-std=gnu89 -pedantic would warn about C++ style // comments, while -std=gnu99 -pedantic would not.
+
+shareimprove this answer
+answered Apr 28 '12 at 13:38
+user1356386
+And what does that get you, aside from the binary ?: operator? The only other extension that comes to mind, structure expressions, is superceded by C++11 list initialization. In any case, this quote mainly relates to C, not C++. – Potatoswatter Apr 28 '12 at 14:06
+add a comment
+
+6
+
+You can refer to following link for which features are supported in particular version of compiler. It has an exhaustive list of feature support in compiler. Looks GCC follows standard closely and implements before any other compiler.
+
+Regarding your question you can compile using
+
+g++ -std=c++11 for C++11
+g++ -std=c++14 for C++14
+g++ -std=c++17 for C++17
+g++ -std=c++2a for C++20, although all features of C++20 are not yet supported refer this link for feature support list in GCC.
+The list changes pretty fast, keep an eye on the list, if you are waiting for particular feature to be supported.
+
+shareimprove this answer
+answered Aug 5 '18 at 18:52
+
+yadhu
+81977 silver badges2121 bronze badges
+add a comment
+Your Answer
+Sign up or log in
+ Sign up using Google
+ Sign up using Facebook
+ Sign up using Email and Password
+Post as a guest
+Name
+Email
+Required, but never shown
+
+Post Your Answer
+By clicking “Post Your Answer”, you agree to our terms of service, privacy policy and cookie policy
+
+Not the answer you're looking for? Browse other questions tagged c++ c++11 g++ flags or ask your own question.
+Blog
+Podcast: Your Buddy is Typing
+The 2020 Developer Survey is now open!
+Featured on Meta
+TLS 1.0 and TLS 1.1 deprecation for Stack Exchange services
+Did Stack Exchange cut the number of negative comments nearly in half between…
+An account of my meeting with the Stack Overflow management team
+Linked
+-1
+Why g++ wont compile simple code?
+0
+Compiler error: expected unqualified-id before ‘using’
+0
+Mutex and condition_variable compiling error with g++
+0
+Why I cannot initialize variables with curly braces in Visual Studio Code?
+-3
+sample C++ project Warning in compile
+24
+Vim [compile and] run shortcut
+10
+Vector c++ 98 error
+11
+How to determine what C++ standard is the default for a C++ compiler?
+11
+How to build Visual Studio Solution under Linux?
+5
+Initializing list of strings in c++11
+see more linked questions…
+Related
+74
+Configuring the GCC compiler switches in Qt, QtCreator, and QMake
+8
+Regular expressions in c++ STL
+1842
+C++11 introduced a standardized memory model. What does it mean? And how is it going to affect C++ programming?
+1431
+What is a lambda expression in C++11?
+857
+What is the difference between 'typedef' and 'using' in C++11?
+3
+How to build NS-3 to use C++0x/C++11 libraries?
+0
+Why is mingw 4.4 saying <random> needs c++0x?
+2
+how do I add -std=c++11 to the compiler options in my NetBeans IDE?
+2
+Error while compiling with a makefile and c++11
+Hot Network Questions
+Calculate the Progressive Mean™
+How to enable Flash Player plugin for Safari in MacOS Catalina?
+Zilog Z80 freezes while binary counting up to 65 536 (2^16)
+Should I cite an article that I can't find?
+Is it bad to use special characters in passwords?
+How does the current remain the same in a circuit?
+U.S. Army/Military's response time to an army appearing in the middle of a major city
+selling appreciated stock vs gifting it to charity
+Muscle spasms in legs during long distance running
+Acyclic group and finite CW-complex
+Are postdocs in your own institution frowned upon?
+How to make a creature pretty?
+Best way to pass a 2d array to functions which size is unknown at compile time in pure C
+How can I count the number of files in a directory and delete the oldest if the number exceeds 5
+How do I explain the long life spans of Elves?
+Need help to explain "set a-rattling the sabers of"
+Some kind of measure
+How can I highlight how much better I've made our code and deal with a coworker that disagrees?
+Can a commercial airplane overtake another airplane going in the same direction?
+Is the mortality rate of 2019-nCoV 41%?
+Why wouldn't dragon-hide make me fire-resistant?
+Will transferring over PPP data stream containing only reserved bytes 0x7E, 0xFF, 0x03 reduce bandwidth by 50% because of escaping?
+How often should I clean my water bladder/reservoir while on a thru-hike, extended backpacking trip, or survival scenario?
+Difference between :: and ::1
+ Question feed
+
+STACK OVERFLOW
+Questions
+Jobs
+Developer Jobs Directory
+Salary Calculator
+Help
+Mobile
+Disable Responsiveness
+PRODUCTS
+Teams
+Talent
+Advertising
+Enterprise
+COMPANY
+About
+Press
+Work Here
+Legal
+Privacy Policy
+Contact Us
+STACK EXCHANGE
+NETWORK
+Technology
+Life / Arts
+Culture / Recreation
+Science
+Other
+Blog
+Facebook
+Twitter
+LinkedIn
+site design / logo © 2020 Stack Exchange Inc; user contributions licensed under cc by-sa 4.0 with attribution required. rev 2020.2.5.35980

@@ -2,6 +2,7 @@
 
 ```
 g++ -o prog1 prog1.cc
+g++ -std=c++11
 ```
 
 -Wall 选项：发出警告
@@ -385,3 +386,87 @@ invalid_argument
 length_error
 out_of_range
 ```
+
+IO
+
+IO库类型和头文件
+
+```
+iostream:
+istream, wistream
+ostream, wostream
+iostream, wiostream
+
+fstream:
+ifstream, wifstream
+ofstream, wofstream
+fstream, wfstream
+
+sstream:
+istringstream, wistringstream
+ostringstream, wostringstream
+stringstream, wstringstream
+```
+
+刷新输出缓冲区：endl, flush, ends
+
+
+fstream
+
+```
+fstream fstrm;
+fstream fstrm(s);
+fstream fstrm(s, mode);
+fstrm.open(s);
+fstrm.close();
+fstrm.is_open();
+```
+
+文件模式
+```
+in
+out
+app
+ate
+trunc
+binary
+```
+
+
+
+顺序容器
+
+```
+vector 可变大小数组
+deque 双端队列
+list 双向链表
+forward_list 单向链表
+array 固定大小数组
+string
+```
+
+向顺序容器添加元素
+
+```
+c.push_back(t)
+c.emplace_back(args)
+c.push_front(t)
+c.emplace_front(args)
+c.insert(p, t)
+c.emplace(p, args)
+c.insert(p, n, t)
+c.insert(p,b,e)
+c.insert(p, il)
+```
+
+容器适配器：stack, queue, priority_queue
+
+
+
+动态内存
+
+shared_ptr, unique_ptr, weak_ptr
+
+析构函数：控制对象销毁时做什么操作
+
+直接管理内存：new 分配内存，delete 释放new分配的内存
